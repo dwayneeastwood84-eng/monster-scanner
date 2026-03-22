@@ -11,7 +11,15 @@
     function onScanSuccess(decodedText) {
       window.location.href = "monster-scanner://scan?code=" + decodedText;
     }
-    new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 }).render(onScanSuccess);
+   const config = {
+  fps: 10,
+  qrbox: 250,
+  videoConstraints: {
+    facingMode: { exact: "environment" } // 👈 forces back camera
+  }
+};
+
+new Html5QrcodeScanner("reader", config).render(onScanSuccess);
   </script>
 </body>
 </html>
