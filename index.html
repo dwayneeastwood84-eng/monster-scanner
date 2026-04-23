@@ -7,19 +7,21 @@
 <body>
   <h1>Scan a Barcode</h1>
   <div id="reader" style="width:300px;"></div>
-  <script>
-    function onScanSuccess(decodedText) {
-      window.location.href = "monster-scanner://scan?code=" + decodedText;
-    }
-   const config = {
-  fps: 10,
-  qrbox: 250,
-  videoConstraints: {
-    facingMode: "environment" // 👈 fallback-friendly
+ <script>
+  function onScanSuccess(decodedText, decodedResult) {
+    // Redirect to your custom URI with the scanned code
+    window.location.href = "monster-scanner://scan?code=" + encodeURIComponent(decodedText);
   }
-};
 
-new Html5QrcodeScanner("reader", config).render(onScanSuccess);
-  </script>
-</body>
-</html>
+  const config = {
+    fps: 10,
+    qrbox: 250,
+    videoConstraints: {
+      facingMode: "environment"
+    }
+  };
+
+  const scanner = new Html5QrcodeScanner("reader", config);
+  scanner.render(onScanSuccess);
+</script>
+
