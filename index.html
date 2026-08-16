@@ -8,10 +8,19 @@
   <h1>Scan a Barcode</h1>
   <div id="reader" style="width:300px;"></div>
  <script>
-  function onScanSuccess(decodedText, decodedResult) {
-    // Redirect to your custom URI with the scanned code
-    window.location.href = "monster-scanner://scan?code=" + encodeURIComponent(decodedText);
-  }
+function onScanSuccess(decodedText, decodedResult) {
+from your database
+    
+    // 1. Fetch monster data fetch("https://script.google.com/macros/s/AKfycbwgO_MS8wOii9LuhVXyM5uARxzDveTl6YsjwirWrC1f9b_xpd7G627_mvfzPIHD2x-VdQ/exec?code=" + encodeURIComponent(decodedText))
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // See what the database returns
+
+        // 2. Redirect back to Godot with the scanned code
+        window.location.href = "monster-scanner://scan?code=" + encodeURIComponent(decodedText);
+      });
+}
+
 
   const config = {
     fps: 10,
