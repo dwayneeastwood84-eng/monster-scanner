@@ -11,10 +11,11 @@
 <script>
 function onScanSuccess(decodedText, decodedResult) {
     // Fetch monster data from your database
-    fetch("https://script.google.com/macros/s/AKfycbwgO_MS8wOii9LuhVXyM5uARxzDveTl6YsjwirWrC1f9b_xpd7G627_mvfzPIHD2x-VdQ/exec?code=" + encodeURIComponent(decodedText))
+    fetch("https://script.google.com/macros/s/AKfycbwgO_MS8wOii9LuhVXyM5uARxzDveTl6YsjwirWrC1f9b_xpd7G627_mvfzPIHD2x-VdQ/exec?code=" 
+          + encodeURIComponent(decodedText))
       .then(response => response.json())
       .then(data => {
-        console.log(data); // See what the database returns
+        console.log(data);
 
         // Redirect back to Godot with the scanned code
         window.location.href = "monster-scanner://scan?code=" + encodeURIComponent(decodedText);
