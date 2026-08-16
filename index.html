@@ -7,18 +7,33 @@
 <body>
   <h1>Scan a Barcode</h1>
   <div id="reader" style="width:300px;"></div>
+  <p id="status"></p>
 
 <script>
+let lastScan = null;
+
 function onScanSuccess(decodedText, decodedResult) {
+    // Prevent duplicate rapid scans
+    if (decodedText === lastScan) return;
+    lastScan = decodedText;
+
     console.log("SCAN FIRED:", decodedText);
+    document.getElementById("status").innerText = "Fetching monster data...";
 
     fetch("https://script.google.com/macros/s/AKfycbwgO_MS8wOii9LuhVXyM5uARxzDveTl6YsjwirWrC1f9b_xpd7G627_mvfzPIHD2x-VdQ/exec?code=" 
           + encodeURIComponent(decodedText))
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        console.log("Monster Data:", data);
 
+        document.getElementById("status").innerText = "Sending to Monster Scanner app...";
+
+        // Redirect back to Godot
         window.location.href = "monster-scanner://scan?code=" + encodeURIComponent(decodedText);
+      })
+      .catch(err => {
+        console.error("Fetch error:", err);
+        document.getElementById("status").innerText = "Error fetching monster data.";
       });
 }
 
