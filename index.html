@@ -10,36 +10,36 @@
 
 <script>
 function onScanSuccess(decodedText, decodedResult) {
-    // Fetch monster data from your database
+    console.log("SCAN FIRED:", decodedText);
+
     fetch("https://script.google.com/macros/s/AKfycbwgO_MS8wOii9LuhVXyM5uARxzDveTl6YsjwirWrC1f9b_xpd7G627_mvfzPIHD2x-VdQ/exec?code=" 
           + encodeURIComponent(decodedText))
       .then(response => response.json())
       .then(data => {
         console.log(data);
 
-        // Redirect back to Godot with the scanned code
         window.location.href = "monster-scanner://scan?code=" + encodeURIComponent(decodedText);
       });
 }
 
-const config = {
-  fps: 10,
-  qrbox: 250,
-  formatsToSupport: [
-    Html5QrcodeSupportedFormats.QR_CODE,
-    Html5QrcodeSupportedFormats.CODE_128,
-    Html5QrcodeSupportedFormats.CODE_39,
-    Html5QrcodeSupportedFormats.EAN_13,
-    Html5QrcodeSupportedFormats.EAN_8,
-    Html5QrcodeSupportedFormats.UPC_A,
-    Html5QrcodeSupportedFormats.UPC_E
-  ],
-  videoConstraints: {
-    facingMode: "environment"
+const scanner = new Html5QrcodeScanner(
+  "reader",
+  {
+    fps: 10,
+    qrbox: 250,
+    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+    formatsToSupport: [
+      Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.CODE_39,
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.QR_CODE
+    ]
   }
-};
+);
 
-const scanner = new Html5QrcodeScanner("reader", config);
 scanner.render(onScanSuccess);
 </script>
 
